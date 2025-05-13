@@ -3,61 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cool Website</title>
+    <title>Portfolio</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, #ff7eb3, #ff758c);
+            background-color: #4a4a4a;
             color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             text-align: center;
         }
-        header {
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.2);
+        .container {
+            max-width: 600px;
         }
         h1 {
-            font-size: 3rem;
+            font-size: 2.5rem;
             margin: 0;
+        }
+        h1 span {
+            color: #00d1b2;
         }
         p {
             font-size: 1.2rem;
+            margin: 10px 0;
         }
         .button {
             display: inline-block;
             margin-top: 20px;
             padding: 10px 20px;
             font-size: 1rem;
-            color: #ff758c;
-            background: white;
+            color: white;
+            background: #00d1b2;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             text-decoration: none;
-            transition: background 0.3s, color 0.3s;
+            transition: background 0.3s, transform 0.3s;
         }
         .button:hover {
-            background: #ff758c;
-            color: white;
-        }
-        footer {
-            margin-top: 50px;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.2);
+            background: #00b89c;
+            transform: scale(1.05);
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Welcome to My Cool Website</h1>
-        <p>Explore and enjoy the awesomeness!</p>
-    </header>
-    <main>
-        <a href="#!" class="button">Click Me!</a>
-    </main>
-    <footer>
-        <p>&copy; 2023 Cool Website. All rights reserved.</p>
-    </footer>
+    <div class="container">
+        <h1>Hello, I'm <span>Maxfm4ik</span></h1>
+        <p>check these buttons!</p>
+        <a href="pages.html" class="button">View My Work</a>
+    </div>
 </body>
 </html>
