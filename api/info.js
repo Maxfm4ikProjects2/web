@@ -1,24 +1,31 @@
-import { NowRequest, NowResponse } from '@vercel/node';
-import ytdl from 'ytdl-core';
 import Cors from 'cors';
+import ytdl from 'ytdl-core';
 
-// Initialize CORS middleware (only allow your frontend domain)
+// Helper to wait for middleware
+function runMiddleware(req, res, fn) {
+  return new Promise((resolve, reject) => {
+    fn(req, res, (result) => {
+      if (result instanceof Error) return reject(result);
+      return resolve(result);
+    });
+  });
+}
+
+// Initialize CORS to only allow your frontend domain
 const cors = Cors({
   methods: ['GET', 'HEAD'],
   origin: 'https://www.maxfm4ik.site',
 });
 
-function runCors(req, res) {
-  return new Promise((resolve, reject) => {
-    cors(req, res, err => {
-      if (err) reject(err);
-      else resolve();
-    });
-  });
-}
-
 export default async function handler(req, res) {
-  await runCors(req, res);
+  // Only GET allowed
+  if (req.method !== 'GET') {
+    res.setHeader('Allow', 'GET');
+    return res.status(405).end('Method Not Allowed');
+  }
+
+  // Run CORS
+  await runMiddleware(req, res, cors);
 
   const videoUrl = req.query.url;
   if (!videoUrl || !ytdl.validateURL(videoUrl)) {
@@ -34,13 +41,15 @@ export default async function handler(req, res) {
       contentLength: f.contentLength,
     }));
 
-    res.status(200).json({
+    return res.status(200).json({
       videoId: info.videoDetails.videoId,
       title: info.videoDetails.title,
-      thumbnail: info.videoDetails.thumbnails.pop().url,
+      thumbnail: info.videoDetails.thumbnails.slice(-1)[0].url,
       formats,
     });
-  } catch (err) {
-    res.status(500).json({ error: 'Info fetch failed', details: err.message });
+  } catch (error) {
+    console.error('Error in /api/info:', error);
+    return res.status(500).json({ error: 'Info fetch failed', details: error.message });
   }
 }
+

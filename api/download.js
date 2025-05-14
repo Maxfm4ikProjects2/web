@@ -1,23 +1,28 @@
-import { NowRequest, NowResponse } from '@vercel/node';
-import ytdl from 'ytdl-core';
 import Cors from 'cors';
+import ytdl from 'ytdl-core';
 
-const corsDownload = Cors({
-  methods: ['GET', 'HEAD'],
-  origin: 'https://www.maxfm4ik.site',
-});
-
-function runCorsDownload(req, res) {
+// Reuse middleware helper
+function runMiddleware(req, res, fn) {
   return new Promise((resolve, reject) => {
-    corsDownload(req, res, err => {
-      if (err) reject(err);
-      else resolve();
+    fn(req, res, (result) => {
+      if (result instanceof Error) return reject(result);
+      return resolve(result);
     });
   });
 }
 
+const cors = Cors({
+  methods: ['GET', 'HEAD'],
+  origin: 'https://www.maxfm4ik.site',
+});
+
 export default async function handler(req, res) {
-  await runCorsDownload(req, res);
+  if (req.method !== 'GET') {
+    res.setHeader('Allow', 'GET');
+    return res.status(405).end('Method Not Allowed');
+  }
+
+  await runMiddleware(req, res, cors);
 
   const videoUrl = req.query.url;
   const itag = req.query.itag;
@@ -25,11 +30,15 @@ export default async function handler(req, res) {
     return res.status(400).send('Missing url or itag');
   }
 
-  res.setHeader('Content-Type', 'video/mp4');
-  res.setHeader(
-    'Content-Disposition',
-    `attachment; filename="${req.query.videoId || 'video'}.${itag}.mp4"`
-  );
-
-  ytdl(videoUrl, { quality: itag }).pipe(res);
+  try {
+    res.setHeader('Content-Type', 'video/mp4');
+    res.setHeader(
+      'Content-Disposition',
+      `attachment; filename="video-${itag}.mp4"`
+    );
+    ytdl(videoUrl, { quality: itag }).pipe(res);
+  } catch (error) {
+    console.error('Error in /api/download:', error);
+    res.status(500).send('Download failed');
+  }
 }
