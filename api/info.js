@@ -23,23 +23,19 @@ export default async function handler(req, res) {
 
   let videoId;
   try {
-    // This will pull out just the ID, no timestamps or playlists
     videoId = ytdl.getURLVideoID(rawUrl);
   } catch (e) {
     return res.status(400).json({ error: 'Invalid YouTube URL' });
   }
 
+  // Reconstruct a clean canonical URL
+  const cleanUrl = `https://www.youtube.com/watch?v=${videoId}`;
+
   try {
-    // Pass only the ID
-    const info = await ytdl.getInfo(videoId);
+    const info = await ytdl.getInfo(cleanUrl);
     const formats = ytdl
       .filterFormats(info.formats, 'audioandvideo')
-      .map(f => ({
-        itag: f.itag,
-        qualityLabel: f.qualityLabel,
-        container: f.container,
-        contentLength: f.contentLength
-      }));
+      .map(f => ({ itag: f.itag, qualityLabel: f.qualityLabel, container: f.container, contentLength: f.contentLength }));
 
     return res.status(200).json({
       videoId: info.videoDetails.videoId,
@@ -49,14 +45,9 @@ export default async function handler(req, res) {
     });
   } catch (err) {
     console.error('ytdl getInfo error:', err);
-    // If the video truly is gone or restricted, send a clearer message
     if (err.message.includes('Status code: 410')) {
-      return res
-        .status(404)
-        .json({ error: 'Video unavailable (removed or restricted)' });
+      return res.status(404).json({ error: 'Video unavailable (removed or restricted)' });
     }
-    return res
-      .status(500)
-      .json({ error: 'Info fetch failed', details: err.message });
+    return res.status(500).json({ error: 'Info fetch failed', details: err.message });
   }
 }
