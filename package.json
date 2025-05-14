@@ -1,0 +1,4 @@
+"dependencies": {
+  "ytdl-core": "^4.11.0",
+  "cors": "^2.8.5"
+}
