@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>YouTube Downloader</title>
+    <meta name="description" content="Download YouTube videos easily with our modern web app" />
+    <meta name="author" content="Maxfm4ik" />
+    <link rel="stylesheet" href="styles.css">
+  </head>
+
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <div class="header">
+        <h1 class="title">
+          <span class="animated-gradient">Maxfm4ik's YouTube Downloader</span>
+        </h1>
+        <p class="subtitle">
+          Enter a YouTube URL to download videos and audio in various formats
+        </p>
+      </div>
+      
+      <!-- Download Form -->
+      <div class="download-form">
+        <form id="urlForm">
+          <div class="input-group">
+            <input 
+              type="text" 
+              id="youtubeUrl" 
+              placeholder="Enter YouTube URL (e.g. https://www.youtube.com/watch?v=...)" 
+              class="url-input"
+              required
+            >
+            <button type="submit" class="submit-button">
+              <span>Get Video Info</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Loading indicator -->
+      <div id="loading" class="loading hidden">
+        <div class="spinner"></div>
+        <p>Loading video information...</p>
+      </div>
+      
+      <!-- Format Selector (hidden by default) -->
+      <div id="formatSelector" class="format-selector hidden">
+        <div class="video-info">
+          <div class="thumbnail-container">
+            <img id="videoThumbnail" src="" alt="Video Thumbnail" class="video-thumbnail">
+          </div>
+          <div class="video-details">
+            <h2 id="videoTitle" class="video-title"></h2>
+            <div class="format-options">
+              <h3>Select Format:</h3>
+              <div id="formatOptions" class="options-container"></div>
+            </div>
+            <button id="downloadButton" class="download-button download-button-pulse">
+              <span>Download</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Download History -->
+      <div class="download-history">
+        <div class="history-header">
+          <h2>Recent Downloads</h2>
+          <button id="clearHistory" class="clear-button">Clear History</button>
+        </div>
+        <div id="historyItems" class="history-items">
+          <!-- History items will be added here dynamically -->
+          <p id="noHistory" class="no-history">No download history yet</p>
+        </div>
+      </div>
+      
+      <!-- Footer -->
+      <div class="footer">
+        <p>This is for educational purposes only.</p>
+        <p>Not affiliated with YouTube.</p>
+      </div>
+    </div>
+
+    <!-- Script -->
+    <script src="script.js"></script>
+  </body>
+</html>
