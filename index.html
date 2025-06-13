@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maxfm4ik</title>
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #4a4a4a;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    .center-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    .profile-window {
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 15px;
+      padding: 20px;
+      max-width: 400px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .profile-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+        .profile-picture {
+            width: 80px;
+            height: 80px;
+            background: url('https://avatars.githubusercontent.com/u/113830259?s=400&u=cdec3dabf587f1605faf0368e13513d8fe868285&v=4') no-repeat center center;
+            background-size: cover;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+    .profile-window h1 {
+      font-size: 1.8rem;
+      margin: 0;
+    }
+
+    .profile-window p {
+      font-size: 1rem;
+      margin: 10px 0 20px;
+    }
+
+    /* Social buttons below the text */
+    .social-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 10px;
+    }
+
+    .social-buttons a {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+      background-color: #2e2e2e;
+      transition: background-color 0.3s;
+    }
+
+    .social-buttons a img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .social-buttons a:hover {
+      background-color: #00d1b2;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div id="container-inside">
+      <div id="circle-small"></div>
+      <div id="circle-medium"></div>
+      <div id="circle-large"></div>
+      <div id="circle-xlarge"></div>
+      <div id="circle-xxlarge"></div>
+    </div>
+
+    <div class="center-content">
+      <div class="profile-window">
+        <div class="profile-header">
+          <div class="profile-picture"></div>
+          <h1>Maxfm4ik</h1>
+        </div>
+
+        <p>Hi, I'm Max. I'm small developer which sometimes does python programs.</p>
+
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
