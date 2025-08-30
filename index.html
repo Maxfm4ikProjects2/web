@@ -21,10 +21,9 @@
       --aside-wide:520px;
     }
     [data-theme="light"]{
-      /* Softer light theme with better contrast (not pure white) */
-      --bg:#eef6fb; /* gentle blue-gray */
-      --panel: rgba(255,255,255,0.80); /* card background */
-      --muted:#2f3e4d; /* darker text */
+      --bg:#eef6fb;
+      --panel: rgba(255,255,255,0.80);
+      --muted:#2f3e4d;
       --accent:#0b63ff;
       --glass: rgba(255,255,255,0.75);
       color-scheme: light;
@@ -37,19 +36,29 @@
       background: radial-gradient(1200px 600px at 10% 10%, rgba(79,124,255,0.06), transparent), var(--bg);
       color:var(--muted);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
       display:flex;align-items:center;justify-content:center;padding:24px;
+      /* entrance animation for reduced opacity on load */
     }
 
-    .site{width:100%;max-width:var(--max-width);background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent 40%);border-radius:14px;padding:22px;backdrop-filter: blur(6px);box-shadow:0 12px 30px rgba(20,30,45,0.12);overflow:hidden;position:relative}
+    /* Respect users who prefer reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .animated, .card, #featured.scrollable, #repos.scrollable, .bg-shapes { animation: none !important; transition: none !important; }
+    }
+
+    .site{width:100%;max-width:var(--max-width);background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent 40%);border-radius:14px;padding:22px;backdrop-filter: blur(6px);box-shadow:0 12px 30px rgba(20,30,45,0.12);overflow:hidden;position:relative;opacity:0;transform:translateY(8px);transition:opacity .6s ease, transform .6s cubic-bezier(.2,.9,.3,1)}
+    .site.is-loaded{opacity:1;transform:none}
 
     header{display:flex;align-items:center;gap:16px;justify-content:space-between;margin-bottom:18px}
     .brand{display:flex;align-items:center;gap:12px}
-    .avatar{width:56px;height:56px;border-radius:50%;background-image:url('https://avatars.githubusercontent.com/u/113830259?s=400&u=cdec3dabf587f1605faf0368e13513d8fe868285&v=4');background-size:cover;background-position:center;border:2px solid rgba(0,0,0,0.06);flex:0 0 auto}
+    .avatar{width:56px;height:56px;border-radius:50%;background-image:url('https://avatars.githubusercontent.com/u/113830259?s=400&u=cdec3dabf587f1605faf0368e13513d8fe868285&v=4');background-size:cover;background-position:center;border:2px solid rgba(0,0,0,0.06);flex:0 0 auto;transform-origin:center;transition:transform .45s cubic-bezier(.2,.9,.3,1)}
+    .brand:hover .avatar{transform:scale(1.04) rotate(-2deg)}
+
     h1{font-size:1.05rem;margin:0;color:var(--muted)}
     p.lead{margin:0;font-weight:600;color:var(--muted);opacity:0.95}
 
     nav{display:flex;gap:8px;align-items:center}
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:var(--panel);color:var(--muted);text-decoration:none;border:1px solid rgba(0,0,0,0.06);font-weight:600;font-size:0.9rem}
-    .btn:hover{transform:translateY(-2px)}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:var(--panel);color:var(--muted);text-decoration:none;border:1px solid rgba(0,0,0,0.06);font-weight:600;font-size:0.9rem;box-shadow: 0 1px 0 rgba(255,255,255,0.02);transform:translateZ(0);transition:transform .18s ease, box-shadow .18s ease}
+    .btn:hover{transform:translateY(-4px);box-shadow:0 8px 18px rgba(10,20,40,0.08)}
+    .btn:active{transform:translateY(-1px) scale(.995)}
 
     main{display:grid;grid-template-columns:1fr var(--aside-width);gap:24px;align-items:start;min-height:60vh}
     .site.wide-aside main{grid-template-columns:1fr var(--aside-wide)}
@@ -57,12 +66,16 @@
     main > section, main > aside, .hero, .panel, .projects, .card {min-width:0}
 
     .hero{padding:20px;border-radius:12px;background:var(--panel);border:1px solid rgba(0,0,0,0.06);position:relative;z-index:2}
-    .hero h2{margin:0 0 8px 0;color:#0b1020;color:var(--muted);font-size:1.6rem}
+    .hero h2{margin:0 0 8px 0;color:var(--muted);font-size:1.6rem;letter-spacing:-0.2px}
     .hero p{margin:0 0 14px 0;color:var(--muted);max-width:54ch}
+
     .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
 
     .projects{margin-top:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
-    .card{background:var(--glass);padding:12px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);min-height:76px;display:flex;flex-direction:column;justify-content:space-between}
+    .card{background:var(--glass);padding:12px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);min-height:76px;display:flex;flex-direction:column;justify-content:space-between;opacity:0;transform:translateY(10px) scale(.995);transition:opacity .36s ease, transform .36s cubic-bezier(.2,.9,.3,1), box-shadow .18s ease}
+    .card.reveal{opacity:1;transform:none}
+    .card:hover{transform:translateY(-6px) scale(1.01);box-shadow:0 18px 30px rgba(10,20,40,0.08)}
+
     .card h3{margin:0 0 6px 0;color:var(--muted);font-size:1rem;word-break:break-word}
     .card p{margin:0;font-size:0.9rem;color:var(--muted);min-height:36px}
     .card a{display:inline-block;margin-top:8px;font-weight:600;color:var(--accent);text-decoration:none}
@@ -71,13 +84,17 @@
     #featured.scrollable{max-height:calc(60vh);overflow:auto;padding-right:8px}
 
     aside{position:relative}
-    .panel{background:var(--panel);padding:14px;border-radius:12px;border:1px solid rgba(0,0,0,0.06);}
+    .panel{background:var(--panel);padding:14px;border-radius:12px;border:1px solid rgba(0,0,0,0.06);transform-origin:top right;transition:transform .4s cubic-bezier(.2,.9,.3,1)}
+
+    .panel.hint{transform:translateY(0)}
     .panel h4{margin:0 0 8px 0;color:var(--muted)}
     .skills{display:flex;flex-wrap:wrap;gap:8px}
-    .chip{padding:6px 8px;border-radius:999px;background:transparent;border:1px dashed rgba(0,0,0,0.06);font-weight:600;color:var(--muted);font-size:0.85rem}
+    .chip{padding:6px 8px;border-radius:999px;background:transparent;border:1px dashed rgba(0,0,0,0.06);font-weight:600;color:var(--muted);font-size:0.85rem;transform:translateZ(0);transition:transform .18s ease}
+    .chip:hover{transform:translateY(-3px)}
 
     .socials{display:flex;gap:8px;margin-top:12px}
-    .icon-btn{display:inline-flex;align-items:center;gap:8px;padding:8px;border-radius:10px;background:transparent;border:1px solid rgba(0,0,0,0.06);text-decoration:none;color:var(--muted);font-weight:600}
+    .icon-btn{display:inline-flex;align-items:center;gap:8px;padding:8px;border-radius:10px;background:transparent;border:1px solid rgba(0,0,0,0.06);text-decoration:none;color:var(--muted);font-weight:600;transition:transform .18s ease}
+    .icon-btn:hover{transform:translateY(-3px)}
 
     #repos.scrollable{max-height:calc(40vh);overflow:auto;padding-right:8px}
 
@@ -85,7 +102,10 @@
 
     @media (max-width:980px){main{grid-template-columns:1fr}aside{order:2} .site{padding:18px}}
 
-    .bg-shapes{position:absolute;right:-120px;top:-60px;width:420px;height:420px;border-radius:40%;filter:blur(40px);opacity:0.08;background:linear-gradient(135deg,var(--accent),#7de0ff);z-index:0}
+    /* animated background shapes */
+    .bg-shapes{position:absolute;right:-120px;top:-60px;width:420px;height:420px;border-radius:40%;filter:blur(40px);opacity:0.08;background:linear-gradient(135deg,var(--accent),#7de0ff);z-index:0;transform:translateY(0);transition:transform 10s linear}
+    .site.is-loaded .bg-shapes{transform:translateY(-20px)}
+
     .site > header, main, footer{position:relative;z-index:1}
 
     /* scrollbar styling */
@@ -101,7 +121,7 @@
   </style>
 </head>
 <body>
-  <div class="site" id="site" role="main">
+  <div class="site animated" id="site" role="main">
     <div class="bg-shapes" aria-hidden="true"></div>
 
     <header>
@@ -114,9 +134,7 @@
       </div>
 
       <nav aria-label="Main navigation">
-        <!-- Projects button removed per request -->
         <a class="btn" href="#contact">Contact</a>
-        <!-- Expand info removed -->
         <button id="themeToggle" class="btn" title="Toggle theme">Toggle theme</button>
       </nav>
     </header>
@@ -128,7 +146,6 @@
 
         <div class="actions">
           <a class="btn" href="https://github.com/Maxfm4ikProjects2" target="_blank" rel="noopener">View GitHub</a>
-          <!-- Copy email and Download CV removed per request -->
         </div>
 
         <h3 style="margin-top:18px;color:var(--muted)">Featured projects</h3>
@@ -139,7 +156,7 @@
       </section>
 
       <aside>
-        <div class="panel">
+        <div class="panel hint" id="panelSkills">
           <h4>Skills</h4>
           <div class="skills">
             <span class="chip">Python</span>
@@ -177,7 +194,7 @@
     </main>
 
     <footer>
-      <small>Made by Maxfm4ik — <span id="year"></span>. Source: <a href="https://github.com/Maxfm4ikProjects2/web/" target="_blank" rel="noopener">GitHub</a></small>
+      <small>Made by Maxfm4ik — <span id="year"></span>. Source: <a href="https://github.com/Maxfm4ikProjects2" target="_blank" rel="noopener">GitHub</a></small>
     </footer>
 
   </div>
@@ -185,6 +202,7 @@
   <script>
     (function(){
       const email = 'max@maxfm4ik.site';
+      const site = document.getElementById('site');
       document.getElementById('year').textContent = new Date().getFullYear();
 
       // Theme toggle (uses data-theme on html element)
@@ -196,6 +214,15 @@
         const current = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
         html.setAttribute('data-theme', current);
         localStorage.setItem('site-theme', current);
+      });
+
+      // small animation: site entrance and subtle avatar poke
+      window.requestAnimationFrame(()=>{
+        site.classList.add('is-loaded');
+        // avatar 'poke' after entrance
+        const avatar = document.querySelector('.avatar');
+        setTimeout(()=> avatar && (avatar.style.transform = 'translateY(-2px) scale(1.02)'), 350);
+        setTimeout(()=> avatar && (avatar.style.transform = ''), 900);
       });
 
       document.getElementById('openMail').addEventListener('click', ()=>{
@@ -211,24 +238,37 @@
           if(!res.ok) throw new Error('GitHub API error');
           const data = await res.json();
 
-          // Show top 8 as cards
+          // Show top 8 as cards with a staggered reveal
           featuredEl.innerHTML = '';
           const top = data.slice(0,8);
-          top.forEach(r=>{
+          top.forEach((r, idx)=>{
             const card = document.createElement('article');
             card.className='card';
             card.innerHTML = `<h3>${escapeHtml(r.name)}</h3><p class="muted">${escapeHtml(r.description||'No description')}</p><a href="${r.html_url}" target="_blank" rel="noopener">View on GitHub →</a>`;
             featuredEl.appendChild(card);
+            // stagger reveal
+            setTimeout(()=> card.classList.add('reveal'), 150 + idx*80);
           });
 
           // sidebar list
           reposEl.innerHTML = '';
-          data.slice(0,12).forEach(r=>{
+          data.slice(0,12).forEach((r, idx)=>{
             const el = document.createElement('div');
             el.style.display='flex';el.style.justifyContent='space-between';el.style.alignItems='center';
             el.innerHTML = `<a href="${r.html_url}" target="_blank" rel="noopener">${escapeHtml(r.name)}</a><small class="muted">★ ${r.stargazers_count}</small>`;
             reposEl.appendChild(el);
+            // reveal for list items too
+            el.style.opacity='0';el.style.transform='translateY(6px)';
+            setTimeout(()=>{el.style.transition='opacity .35s ease, transform .35s cubic-bezier(.2,.9,.3,1)';el.style.opacity='1';el.style.transform='none'}, 220 + idx*40);
           });
+
+          // IntersectionObserver: reveal cards when scrolled into view (in case not in viewport yet)
+          const io = new IntersectionObserver((entries)=>{
+            entries.forEach(ent=>{
+              if(ent.isIntersecting) ent.target.classList.add('reveal');
+            });
+          }, {threshold:0.18});
+          document.querySelectorAll('.card').forEach(c=> io.observe(c));
 
         }catch(err){
           console.warn(err);
@@ -239,12 +279,29 @@
 
       // Safe HTML escape
       function escapeHtml(s){
-        return String(s).replace(/[&<>\"']/g, function(c){
+        return String(s).replace(/[&<>\\"']/g, function(c){
           return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
         });
       }
 
       fetchRepos();
+
+      // subtle floating animation for background shapes (slow loop)
+      (function floatBg(){
+        const bg = document.querySelector('.bg-shapes');
+        let dir = 1;
+        if(!bg) return;
+        let pos = 0;
+        function step(){
+          pos += 0.02 * dir;
+          if(pos > 18 || pos < -18) dir *= -1;
+          bg.style.transform = `translateY(${ -10 + pos }px)`;
+          requestAnimationFrame(step);
+        }
+        // stop if user prefers reduced motion
+        const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+        if(!mq || !mq.matches) requestAnimationFrame(step);
+      })();
 
       // accessibility: focus visible for keyboard users
       document.addEventListener('keydown', function(e){
