@@ -35,30 +35,27 @@
       margin:0;font-family:'Poppins',system-ui,Segoe UI,Roboto,Arial;
       background: radial-gradient(1200px 600px at 10% 10%, rgba(79,124,255,0.06), transparent), var(--bg);
       color:var(--muted);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
-      display:flex;align-items:center;justify-content:center;padding:24px;
-      /* entrance animation for reduced opacity on load */
+      display:flex;align-items:center;justify-content:center;padding:24px;min-height:100vh;
     }
 
-    /* Respect users who prefer reduced motion */
+    /* Respect prefers-reduced-motion */
     @media (prefers-reduced-motion: reduce) {
       .animated, .card, #featured.scrollable, #repos.scrollable, .bg-shapes { animation: none !important; transition: none !important; }
     }
 
+    /* entrance animation (kept) */
     .site{width:100%;max-width:var(--max-width);background: linear-gradient(180deg, rgba(255,255,255,0.03), transparent 40%);border-radius:14px;padding:22px;backdrop-filter: blur(6px);box-shadow:0 12px 30px rgba(20,30,45,0.12);overflow:hidden;position:relative;opacity:0;transform:translateY(8px);transition:opacity .6s ease, transform .6s cubic-bezier(.2,.9,.3,1)}
     .site.is-loaded{opacity:1;transform:none}
 
     header{display:flex;align-items:center;gap:16px;justify-content:space-between;margin-bottom:18px}
     .brand{display:flex;align-items:center;gap:12px}
-    .avatar{width:56px;height:56px;border-radius:50%;background-image:url('https://avatars.githubusercontent.com/u/113830259?s=400&u=cdec3dabf587f1605faf0368e13513d8fe868285&v=4');background-size:cover;background-position:center;border:2px solid rgba(0,0,0,0.06);flex:0 0 auto;transform-origin:center;transition:transform .45s cubic-bezier(.2,.9,.3,1)}
-    .brand:hover .avatar{transform:scale(1.04) rotate(-2deg)}
+    .avatar{width:56px;height:56px;border-radius:50%;background-image:url('https://avatars.githubusercontent.com/u/113830259?s=400&u=cdec3dabf587f1605faf0368e13513d8fe868285&v=4');background-size:cover;background-position:center;border:2px solid rgba(0,0,0,0.06);flex:0 0 auto;transition:transform .45s cubic-bezier(.2,.9,.3,1)}
 
     h1{font-size:1.05rem;margin:0;color:var(--muted)}
     p.lead{margin:0;font-weight:600;color:var(--muted);opacity:0.95}
 
     nav{display:flex;gap:8px;align-items:center}
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:var(--panel);color:var(--muted);text-decoration:none;border:1px solid rgba(0,0,0,0.06);font-weight:600;font-size:0.9rem;box-shadow: 0 1px 0 rgba(255,255,255,0.02);transform:translateZ(0);transition:transform .18s ease, box-shadow .18s ease}
-    .btn:hover{transform:translateY(-4px);box-shadow:0 8px 18px rgba(10,20,40,0.08)}
-    .btn:active{transform:translateY(-1px) scale(.995)}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:var(--panel);color:var(--muted);text-decoration:none;border:1px solid rgba(0,0,0,0.06);font-weight:600;font-size:0.9rem}
 
     main{display:grid;grid-template-columns:1fr var(--aside-width);gap:24px;align-items:start;min-height:60vh}
     .site.wide-aside main{grid-template-columns:1fr var(--aside-wide)}
@@ -72,9 +69,9 @@
     .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
 
     .projects{margin-top:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+    /* reveal animation kept for cards; hover lift removed per request */
     .card{background:var(--glass);padding:12px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);min-height:76px;display:flex;flex-direction:column;justify-content:space-between;opacity:0;transform:translateY(10px) scale(.995);transition:opacity .36s ease, transform .36s cubic-bezier(.2,.9,.3,1), box-shadow .18s ease}
     .card.reveal{opacity:1;transform:none}
-    .card:hover{transform:translateY(-6px) scale(1.01);box-shadow:0 18px 30px rgba(10,20,40,0.08)}
 
     .card h3{margin:0 0 6px 0;color:var(--muted);font-size:1rem;word-break:break-word}
     .card p{margin:0;font-size:0.9rem;color:var(--muted);min-height:36px}
@@ -84,25 +81,38 @@
     #featured.scrollable{max-height:calc(60vh);overflow:auto;padding-right:8px}
 
     aside{position:relative}
-    .panel{background:var(--panel);padding:14px;border-radius:12px;border:1px solid rgba(0,0,0,0.06);transform-origin:top right;transition:transform .4s cubic-bezier(.2,.9,.3,1)}
-
+    .panel{background:var(--panel);padding:14px;border-radius:12px;border:1px solid rgba(0,0,0,0.06);}
     .panel.hint{transform:translateY(0)}
     .panel h4{margin:0 0 8px 0;color:var(--muted)}
     .skills{display:flex;flex-wrap:wrap;gap:8px}
-    .chip{padding:6px 8px;border-radius:999px;background:transparent;border:1px dashed rgba(0,0,0,0.06);font-weight:600;color:var(--muted);font-size:0.85rem;transform:translateZ(0);transition:transform .18s ease}
-    .chip:hover{transform:translateY(-3px)}
+    .chip{padding:6px 8px;border-radius:999px;background:transparent;border:1px dashed rgba(0,0,0,0.06);font-weight:600;color:var(--muted);font-size:0.85rem}
 
     .socials{display:flex;gap:8px;margin-top:12px}
-    .icon-btn{display:inline-flex;align-items:center;gap:8px;padding:8px;border-radius:10px;background:transparent;border:1px solid rgba(0,0,0,0.06);text-decoration:none;color:var(--muted);font-weight:600;transition:transform .18s ease}
-    .icon-btn:hover{transform:translateY(-3px)}
+    .icon-btn{display:inline-flex;align-items:center;gap:8px;padding:8px;border-radius:10px;background:transparent;border:1px solid rgba(0,0,0,0.06);text-decoration:none;color:var(--muted);font-weight:600}
 
     #repos.scrollable{max-height:calc(40vh);overflow:auto;padding-right:8px}
 
     footer{margin-top:18px;color:var(--muted);font-size:0.85rem;text-align:center}
 
-    @media (max-width:980px){main{grid-template-columns:1fr}aside{order:2} .site{padding:18px}}
+    /* responsive/mobile improvements */
+    @media (max-width:980px){
+      main{grid-template-columns:1fr}
+      aside{order:2}
+      .site{padding:18px}
+    }
+    @media (max-width:600px){
+      /* align top so scrolling shows content naturally and avoid centered whitespace */
+      body{align-items:flex-start;padding:16px;}
+      .site{padding:16px;border-radius:12px;margin-top:6px}
+      .avatar{width:44px;height:44px}
+      .hero h2{font-size:1.3rem}
+      .projects{grid-template-columns:1fr}
+      #featured.scrollable{max-height:50vh}
+      #repos.scrollable{max-height:30vh}
+      .site{box-shadow:0 8px 18px rgba(10,20,40,0.08)}
+    }
 
-    /* animated background shapes */
+    /* animated background shapes (kept) */
     .bg-shapes{position:absolute;right:-120px;top:-60px;width:420px;height:420px;border-radius:40%;filter:blur(40px);opacity:0.08;background:linear-gradient(135deg,var(--accent),#7de0ff);z-index:0;transform:translateY(0);transition:transform 10s linear}
     .site.is-loaded .bg-shapes{transform:translateY(-20px)}
 
@@ -216,13 +226,9 @@
         localStorage.setItem('site-theme', current);
       });
 
-      // small animation: site entrance and subtle avatar poke
+      // entrance animation
       window.requestAnimationFrame(()=>{
         site.classList.add('is-loaded');
-        // avatar 'poke' after entrance
-        const avatar = document.querySelector('.avatar');
-        setTimeout(()=> avatar && (avatar.style.transform = 'translateY(-2px) scale(1.02)'), 350);
-        setTimeout(()=> avatar && (avatar.style.transform = ''), 900);
       });
 
       document.getElementById('openMail').addEventListener('click', ()=>{
@@ -262,7 +268,7 @@
             setTimeout(()=>{el.style.transition='opacity .35s ease, transform .35s cubic-bezier(.2,.9,.3,1)';el.style.opacity='1';el.style.transform='none'}, 220 + idx*40);
           });
 
-          // IntersectionObserver: reveal cards when scrolled into view (in case not in viewport yet)
+          // IntersectionObserver: reveal cards when scrolled into view
           const io = new IntersectionObserver((entries)=>{
             entries.forEach(ent=>{
               if(ent.isIntersecting) ent.target.classList.add('reveal');
@@ -286,7 +292,7 @@
 
       fetchRepos();
 
-      // subtle floating animation for background shapes (slow loop)
+      // subtle floating animation for background shapes (kept)
       (function floatBg(){
         const bg = document.querySelector('.bg-shapes');
         let dir = 1;
