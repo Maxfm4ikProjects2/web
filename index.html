@@ -1,116 +1,292 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Maxfm4ik</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Maxfm4ik — Developer</title>
+  <meta name="description" content="Maxfm4ik — Small developer. Projects, contact and recent GitHub repos." />
+  <link rel="icon" href="data:;base64,iVBORw0KGgo="> <!-- add your favicon here -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    body {
-      margin: 0;
-      padding: 0;
+    :root{
+      --bg:#0b1020;
+      --panel: rgba(255,255,255,0.04);
+      --muted: #9aa4c0;
+      --accent:#4f7cff;
+      --glass: rgba(255,255,255,0.04);
+      color-scheme: dark;
+      --max-width:1300px; /* increased to fit more content */
+      --aside-width:360px;
+      --aside-wide:520px;
+    }
+    [data-theme="light"]{
+      --bg:#f7f9fc;
+      --panel: rgba(12,18,28,0.04);
+      --muted:#475569;
+      --accent:#0b63ff;
+      --glass: rgba(0,0,0,0.04);
+      color-scheme: light;
     }
 
-    .center-content {
-      text-align: center;
-      position: relative;
-      z-index: 2;
+    *{box-sizing:border-box}
+    html,body{height:100%;}
+    body{
+      margin:0;font-family:'Poppins',system-ui,Segoe UI,Roboto,Arial;
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(79,124,255,0.08), transparent), var(--bg);
+      color:var(--muted);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+      display:flex;align-items:center;justify-content:center;padding:24px;
     }
 
-    .profile-window {
-      background: rgba(0, 0, 0, 0.7);
-      border-radius: 15px;
-      padding: 20px;
-      max-width: 400px;
-      margin: auto;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    }
+    .site{width:100%;max-width:var(--max-width);background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent 40%);border-radius:14px;padding:22px;backdrop-filter: blur(6px);box-shadow:0 8px 30px rgba(2,6,23,0.6);overflow:hidden;position:relative}
 
-    .profile-header {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 15px;
-    }
+    header{display:flex;align-items:center;gap:16px;justify-content:space-between;margin-bottom:18px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .avatar{width:56px;height:56px;border-radius:50%;background-image:url('https://avatars.githubusercontent.com/u/113830259?s=400&u=cdec3dabf587f1605faf0368e13513d8fe868285&v=4');background-size:cover;background-position:center;border:2px solid rgba(255,255,255,0.06);flex:0 0 auto}
+    h1{font-size:1.05rem;margin:0;color:var(--muted)}
+    p.lead{margin:0;font-weight:600;color:var(--muted);opacity:0.95}
 
-    .profile-picture {
-      width: 80px;
-      height: 80px;
-      background: url('https://avatars.githubusercontent.com/u/113830259?s=400&u=cdec3dabf587f1605faf0368e13513d8fe868285&v=4') no-repeat center center;
-      background-size: cover;
-      border-radius: 50%;
-      margin-bottom: 10px;
-    }
+    nav{display:flex;gap:8px;align-items:center}
+    .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:var(--panel);color:var(--muted);text-decoration:none;border:1px solid transparent;font-weight:600;font-size:0.9rem}
+    .btn:hover{transform:translateY(-2px)}
 
-    .profile-window h1 {
-      font-size: 1.8rem;
-      margin: 0;
-      color: white;
-    }
+    main{display:grid;grid-template-columns:1fr var(--aside-width);gap:24px;align-items:start;min-height:60vh}
+    /* when wide class is present, make aside bigger */
+    .site.wide-aside main{grid-template-columns:1fr var(--aside-wide)}
 
-    .profile-window p {
-      font-size: 1rem;
-      margin: 10px 0 20px;
-      color: white;
-    }
+    /* Ensure children can shrink to avoid overflow/overlap */
+    main > section, main > aside, .hero, .panel, .projects, .card {min-width:0}
 
-    .social-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 10px;
-    }
+    /* hero */
+    .hero{padding:20px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border:1px solid rgba(255,255,255,0.02);position:relative;z-index:2}
+    .hero h2{margin:0 0 8px 0;color:#fff;font-size:1.6rem}
+    .hero p{margin:0 0 14px 0;color:var(--muted);max-width:54ch}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+    .actions .btn{white-space:nowrap}
 
-    .social-buttons a {
-      display: inline-block;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      overflow: hidden;
-      background-color: #2e2e2e;
-      transition: background-color 0.3s;
-    }
+    /* projects */
+    .projects{margin-top:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+    .card{background:var(--glass);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);min-height:76px;display:flex;flex-direction:column;justify-content:space-between}
+    .card h3{margin:0 0 6px 0;color:#fff;font-size:1rem;word-break:break-word}
+    .card p{margin:0;font-size:0.9rem;color:var(--muted);min-height:36px}
+    .card a{display:inline-block;margin-top:8px;font-weight:600;color:var(--accent);text-decoration:none}
 
-    .social-buttons a img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
+    /* make the featured column scrollable */
+    #featured.scrollable{max-height:calc(60vh);overflow:auto;padding-right:8px}
 
-    .social-buttons a:hover,
-    .social-buttons a:focus {
-      background-color: #3b82f6;
-      outline: none;
-    }
+    /* right column */
+    aside{position:relative}
+    .panel{background:var(--panel);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);}
+    .panel h4{margin:0 0 8px 0;color:#fff}
+    .skills{display:flex;flex-wrap:wrap;gap:8px}
+    .chip{padding:6px 8px;border-radius:999px;background:transparent;border:1px dashed rgba(255,255,255,0.04);font-weight:600;color:var(--muted);font-size:0.85rem}
+
+    .socials{display:flex;gap:8px;margin-top:12px}
+    .icon-btn{display:inline-flex;align-items:center;gap:8px;padding:8px;border-radius:10px;background:transparent;border:1px solid rgba(255,255,255,0.03);text-decoration:none;color:var(--muted);font-weight:600}
+
+    /* recent repos scroll */
+    #repos.scrollable{max-height:calc(40vh);overflow:auto;padding-right:8px}
+
+    footer{margin-top:18px;color:var(--muted);font-size:0.85rem;text-align:center}
+
+    /* responsive */
+    @media (max-width:980px){main{grid-template-columns:1fr}aside{order:2} .site{padding:18px}}
+
+    /* subtle animated background shapes */
+    .bg-shapes{position:absolute;right:-120px;top:-60px;width:420px;height:420px;border-radius:40%;filter:blur(40px);opacity:0.12;background:linear-gradient(135deg,var(--accent),#7de0ff);z-index:0}
+    .site > header, main, footer{position:relative;z-index:1}
+
+    /* scrollbar styling (subtle) */
+    #featured.scrollable::-webkit-scrollbar, #repos.scrollable::-webkit-scrollbar{width:10px}
+    #featured.scrollable::-webkit-scrollbar-thumb, #repos.scrollable::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.04);border-radius:8px;border:2px solid transparent;background-clip:padding-box}
+
+    /* loader */
+    .loader{display:inline-block;width:18px;height:18px;border:3px solid rgba(255,255,255,0.08);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* small helpers */
+    .muted{color:var(--muted)}
+    .hidden{display:none}
+
   </style>
 </head>
 <body>
-  <section>
-    <div class="wave">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
+  <div class="site" id="site" role="main">
+    <div class="bg-shapes" aria-hidden="true"></div>
 
-    <div class="center-content">
-      <div class="profile-window">
-        <div class="profile-header">
-          <div class="profile-picture"></div>
+    <header>
+      <div class="brand">
+        <div class="avatar" aria-hidden="true"></div>
+        <div>
           <h1>Maxfm4ik</h1>
-        </div>
-        <p>Hi, I'm Max. I'm a small developer who sometimes writes Python programs.</p>
-
-        <div class="social-buttons">
-          <a href="https://github.com/Maxfm4ikProjects2" target="_blank" title="GitHub">
-            <img src="https://cdn-icons-png.flaticon.com/512/25/25231.png" alt="GitHub" />
-          </a>
-          <a href="https://discord.com/users/851061989820071946D" target="_blank" title="Discord">
-            <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/discord-round-black-icon.png" alt="Discord" />
-          </a>
+          <p class="lead">Small developer — I sometimes write Python programs</p>
         </div>
       </div>
-    </div>
-  </section>
+
+      <nav aria-label="Main navigation">
+        <a class="btn" href="#projects">Projects</a>
+        <a class="btn" href="#contact">Contact</a>
+        <button id="toggleAside" class="btn" title="Expand info panel">Expand info</button>
+        <button id="themeToggle" class="btn" title="Toggle theme">Toggle theme</button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-heading">
+        <h2 id="hero-heading">Hey — I'm Max 👋</h2>
+        <p>I'm a small developer focusing on small, useful tools and learning something new every day. Here are some recent projects and places to reach me.</p>
+
+        <div class="actions">
+          <a class="btn" href="https://github.com/Maxfm4ikProjects2" target="_blank" rel="noopener">View GitHub</a>
+          <button class="btn" id="copyEmail">Copy email</button>
+          <a class="btn" href="/resume.pdf" download>Download CV</a>
+        </div>
+
+        <h3 style="margin-top:18px;color:#fff">Featured projects</h3>
+        <div id="featured" class="projects scrollable" aria-live="polite">
+          <!-- JS injects featured cards and GitHub repos -->
+          <div class="card"><div class="loader" aria-hidden="true"></div></div>
+        </div>
+      </section>
+
+      <aside>
+        <div class="panel">
+          <h4>Skills</h4>
+          <div class="skills">
+            <span class="chip">Python</span>
+            <span class="chip">Go</span>
+            <span class="chip">C</span>
+            <span class="chip">Web</span>
+            <span class="chip">Linux</span>
+            <span class="chip">APIs</span>
+          </div>
+
+          <h4 style="margin-top:12px">Social</h4>
+          <div class="socials">
+            <a class="icon-btn" href="https://github.com/Maxfm4ikProjects2" target="_blank" rel="noopener">GitHub</a>
+            <a class="icon-btn" href="https://discord.com/users/851061989820071946" target="_blank" rel="noopener">Discord</a>
+            <a class="icon-btn" href="/about" target="_blank" rel="noopener">About</a>
+          </div>
+
+        </div>
+
+        <div class="panel" style="margin-top:12px" id="contact">
+          <h4>Contact</h4>
+          <p class="muted">Prefer email? Click to copy or press the envelope to open your mail client.</p>
+          <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
+            <button id="openMail" class="btn">✉️ Email</button>
+            <span id="email" class="muted">max@maxfm4ik.site</span>
+          </div>
+        </div>
+
+        <div class="panel" style="margin-top:12px">
+          <h4>Recent GitHub</h4>
+          <div id="repos" class="scrollable" style="display:grid;gap:8px;margin-top:8px"></div>
+        </div>
+      </aside>
+
+    </main>
+
+    <footer>
+      <small>Made by Max — <span id="year"></span>. Source: <a href="https://github.com/Maxfm4ikProjects2" target="_blank" rel="noopener">GitHub</a></small>
+    </footer>
+
+  </div>
+
+  <script>
+    (function(){
+      const email = 'max@maxfm4ik.site';
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // Theme toggle (uses data-theme on html element)
+      const themeToggle = document.getElementById('themeToggle');
+      const html = document.documentElement;
+      const stored = localStorage.getItem('site-theme');
+      if(stored) html.setAttribute('data-theme', stored);
+      themeToggle.addEventListener('click', ()=>{
+        const current = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        html.setAttribute('data-theme', current);
+        localStorage.setItem('site-theme', current);
+      });
+
+      // Expand/contract aside width
+      const toggleAside = document.getElementById('toggleAside');
+      const site = document.getElementById('site');
+      const storedWide = localStorage.getItem('site-wide-aside');
+      if(storedWide === '1') site.classList.add('wide-aside');
+      toggleAside.addEventListener('click', ()=>{
+        const isWide = site.classList.toggle('wide-aside');
+        localStorage.setItem('site-wide-aside', isWide ? '1' : '0');
+        toggleAside.textContent = isWide ? 'Contract info' : 'Expand info';
+      });
+
+      // Copy email with visual feedback
+      document.getElementById('copyEmail').addEventListener('click', async ()=>{
+        try{
+          await navigator.clipboard.writeText(email);
+          const btn = document.getElementById('copyEmail');
+          const prev = btn.textContent;
+          btn.textContent = 'Copied';
+          setTimeout(()=> btn.textContent = prev, 1600);
+        }catch(e){
+          prompt('Copy email manually', email);
+        }
+      });
+
+      document.getElementById('openMail').addEventListener('click', ()=>{
+        window.location.href = 'mailto:'+email+'?subject=Hi%20Max';
+      });
+
+      // Fetch public GitHub repos (client-side)
+      async function fetchRepos(){
+        const reposEl = document.getElementById('repos');
+        const featuredEl = document.getElementById('featured');
+        try{
+          const res = await fetch('https://api.github.com/users/Maxfm4ikProjects2/repos?per_page=12&sort=updated');
+          if(!res.ok) throw new Error('GitHub API error');
+          const data = await res.json();
+
+          // Show top 8 as cards
+          featuredEl.innerHTML = '';
+          const top = data.slice(0,8);
+          top.forEach(r=>{
+            const card = document.createElement('article');
+            card.className='card';
+            card.innerHTML = `<h3>${escapeHtml(r.name)}</h3><p class="muted">${escapeHtml(r.description||'No description')}</p><a href="${r.html_url}" target="_blank" rel="noopener">View on GitHub →</a>`;
+            featuredEl.appendChild(card);
+          });
+
+          // sidebar list
+          reposEl.innerHTML = '';
+          data.slice(0,12).forEach(r=>{
+            const el = document.createElement('div');
+            el.style.display='flex';el.style.justifyContent='space-between';el.style.alignItems='center';
+            el.innerHTML = `<a href="${r.html_url}" target="_blank" rel="noopener">${escapeHtml(r.name)}</a><small class="muted">★ ${r.stargazers_count}</small>`;
+            reposEl.appendChild(el);
+          });
+
+        }catch(err){
+          console.warn(err);
+          featuredEl.innerHTML = '<div class="card"><p class="muted">Could not load GitHub repos. You can still add projects manually below.</p></div>';
+          reposEl.innerHTML = '<div class="muted">Could not load repos</div>';
+        }
+      }
+
+      // Safe HTML escape
+      function escapeHtml(s){
+        return String(s).replace(/[&<>\"']/g, function(c){
+          return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+        });
+      }
+
+      fetchRepos();
+
+      // accessibility: focus visible for keyboard users
+      document.addEventListener('keydown', function(e){
+        if(e.key==='Tab') document.body.classList.add('show-focus');
+      });
+
+    })();
+  </script>
 </body>
 </html>
